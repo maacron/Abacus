@@ -1,15 +1,16 @@
-import { Audio } from "expo-av";
+import { useAudioPlayer } from 'expo-audio';
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
+const wrongSoundSource = require("../assets/audios/wrong.mp3")
+
 export default function GameScreen() {
+  const wrongSoundPlayer = useAudioPlayer(wrongSoundSource);
+
   const [answer, setAnswer] = useState("");
   const [questionNumber, setQuestionNumber] = useState(1)
   const [numbers, setNumbers] = useState({ num1: 0, num2: 0 });
   const [interval, setInterval] = useState({start: 1, end: 10})
-
-  const [correctSound, setCorrectSound] = useState<Audio.Sound | undefined>(undefined);
-  const [wrongSound, setWrongSound] = useState<Audio.Sound | undefined>(undefined);
 
   // Functions 
   const generateNumbers = () => {
@@ -22,51 +23,19 @@ export default function GameScreen() {
   useEffect(() => {
     generateNumbers();
 
-    // Load both sounds on mount
-    const loadSounds = async () => {
-      const { sound: cSound } = await Audio.Sound.createAsync(require("../assets/audios/wrong.mp3"));
-      setCorrectSound(cSound);
-
-      const { sound: wSound } = await Audio.Sound.createAsync(require("../assets/audios/wrong.mp3"));
-      setWrongSound(wSound);
-    };
-    loadSounds();
-
-    // Unload sounds on unmount
-    return () => {
-      if (correctSound) {
-        correctSound.unloadAsync();
-      }
-      if (wrongSound) {
-        wrongSound.unloadAsync();
-      }
-    };
-
   }, []);  
-
-  const playCorrectSound = async () => {
-    if (correctSound) {
-      await correctSound.replayAsync();
-    }
-  };
-
-  const playWrongSound = async () => {
-    if (wrongSound) {
-      await wrongSound.replayAsync();
-    }
-  };
 
   const checkAnswer = (answer: string) => {
     const correctAnswer = numbers.num1 * numbers.num2; 
 
     if (parseInt(answer) === correctAnswer) {
-      playCorrectSound();
       setQuestionNumber(prev => prev + 1);
       generateNumbers();
       setAnswer("");
     }
     else { 
-      playWrongSound();
+      wrongSoundPlayer.seekTo(0);
+      wrongSoundPlayer.play();
       setAnswer("")
     }
   };
