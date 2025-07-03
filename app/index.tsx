@@ -1,11 +1,9 @@
-import { useAudioPlayer } from 'expo-audio';
+import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
-const wrongSoundSource = require("../assets/audios/wrong.mp3")
 
 export default function GameScreen() {
-  const wrongSoundPlayer = useAudioPlayer(wrongSoundSource);
 
   const [answer, setAnswer] = useState("");
   const [questionNumber, setQuestionNumber] = useState(1)
@@ -30,12 +28,13 @@ export default function GameScreen() {
 
     if (parseInt(answer) === correctAnswer) {
       setQuestionNumber(prev => prev + 1);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); // Optional: success feedback
       generateNumbers();
       setAnswer("");
     }
     else { 
-      wrongSoundPlayer.seekTo(0);
-      wrongSoundPlayer.play();
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error); // Optional: success feedback
+      // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
       setAnswer("")
     }
   };
