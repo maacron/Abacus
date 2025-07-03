@@ -1,6 +1,9 @@
 import * as Haptics from 'expo-haptics';
+import { router } from 'expo-router';
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+
+
 
 
 export default function GameScreen() {
@@ -40,8 +43,11 @@ export default function GameScreen() {
   };
 
   return (
-    <View style={styles.container}>
-
+    <Pressable
+      style={styles.container}
+      onLongPress={() => router.push("/settings")}
+      delayLongPress={500} // optional: adjust sensitivity
+    >
       <View style={styles.card}>
         <Text style={styles.questionNumber}>Question {questionNumber}</Text>
         <Text style={styles.questionText}>{numbers.num1} × {numbers.num2}</Text>
@@ -52,12 +58,10 @@ export default function GameScreen() {
           placeholderTextColor="#888"
           value={answer}
           onChangeText={setAnswer}
-          onSubmitEditing={() => {
-            checkAnswer(answer)
-          }}
+          onSubmitEditing={() => checkAnswer(answer)}
         />
       </View>
-    </View>
+    </Pressable>
   );
 }
 
