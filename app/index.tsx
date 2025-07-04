@@ -1,44 +1,38 @@
-import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
+import { useInterval } from "@/app/components/IntervalContext"; // adjust path if needed
+import * as Haptics from "expo-haptics";
+import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
-
-
-
-export default function GameScreen() {
+export default function Index() {
+  const { interval } = useInterval();
+  const router = useRouter();
 
   const [answer, setAnswer] = useState("");
-  const [questionNumber, setQuestionNumber] = useState(1)
+  const [questionNumber, setQuestionNumber] = useState(1);
   const [numbers, setNumbers] = useState({ num1: 0, num2: 0 });
-  const [interval, setInterval] = useState({start: 1, end: 10})
 
-  // Functions 
   const generateNumbers = () => {
-    const num1 = Math.floor(Math.random() * interval.end) + interval.start;
-    const num2 = Math.floor(Math.random() * interval.end) + interval.start;
+    const num1 = Math.floor(Math.random() * (interval.end - interval.start + 1)) + interval.start;
+    const num2 = Math.floor(Math.random() * (interval.end - interval.start + 1)) + interval.start;
     setNumbers({ num1, num2 });
-  }; 
+  };
 
-  // Call it once on mount
   useEffect(() => {
     generateNumbers();
-
-  }, []);  
+  }, [interval]);
 
   const checkAnswer = (answer: string) => {
-    const correctAnswer = numbers.num1 * numbers.num2; 
+    const correctAnswer = numbers.num1 * numbers.num2;
 
     if (parseInt(answer) === correctAnswer) {
-      setQuestionNumber(prev => prev + 1);
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); // Optional: success feedback
+      setQuestionNumber((prev) => prev + 1);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       generateNumbers();
       setAnswer("");
-    }
-    else { 
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error); // Optional: success feedback
-      // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-      setAnswer("")
+    } else {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      setAnswer("");
     }
   };
 
@@ -46,11 +40,13 @@ export default function GameScreen() {
     <Pressable
       style={styles.container}
       onLongPress={() => router.push("/settings")}
-      delayLongPress={500} // optional: adjust sensitivity
+      delayLongPress={500}
     >
       <View style={styles.card}>
         <Text style={styles.questionNumber}>Question {questionNumber}</Text>
-        <Text style={styles.questionText}>{numbers.num1} × {numbers.num2}</Text>
+        <Text style={styles.questionText}>
+          {numbers.num1} × {numbers.num2}
+        </Text>
 
         <TextInput
           style={styles.input}
@@ -71,13 +67,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#f6f6f6",
     paddingTop: 50,
     alignItems: "center",
-  },
-  header: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#ccc",
-    alignSelf: "flex-start",
-    marginLeft: 16,
   },
   card: {
     flex: 1,
