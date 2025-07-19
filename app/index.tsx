@@ -16,7 +16,7 @@ export default function Index() {
   const [answer, setAnswer] = useState("");
   const [questionNumber, setQuestionNumber] = useState(1);
   const [numbers, setNumbers] = useState({ num1: 0, num2: 0 });
-  const [timer, setTimer] = useState(3);
+  const [timer, setTimer] = useState(4);
   const [showTimer, setShowTimer] = useState(true);
   const [wrongList, setWrongList] = useState<WrongItem[]>([]);
   const [isReviewPhase, setIsReviewPhase] = useState(false);
@@ -34,7 +34,7 @@ export default function Index() {
       setNumbers({ num1, num2 });
     }
     setShowTimer(true);
-    setTimer(3);
+    setTimer(4);
   };
 
   useEffect(() => {

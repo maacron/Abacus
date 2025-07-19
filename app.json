@@ -2,7 +2,7 @@
   "expo": {
     "name": "Maths",
     "slug": "Maths",
-    "version": "1.0.0",
+    "version": "1.0.0",  
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "maths",
@@ -19,10 +19,9 @@
       "edgeToEdgeEnabled": true,
       "permissions": [
         "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS",
-        "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS"
-      ]
+      ],
+      "package": "com.macron404.Maths"
     },
     "web": {
       "bundler": "metro",
@@ -52,11 +51,10 @@
         "projectId": "53af3299-9909-4db9-bfb0-4800cef1e66a"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": "1.0.0",  
     "updates": {
       "url": "https://u.expo.dev/53af3299-9909-4db9-bfb0-4800cef1e66a"
-    }
+    },
+    "owner": "macron404"
   }
 }
