@@ -4,41 +4,69 @@ import React, { useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function SettingsScreen() {
-  const { interval, setInterval } = useInterval();
+  const { firstNumber, secondNumber, setFirstNumber, setSecondNumber } = useInterval();
   const router = useRouter();
 
-  const [start, setStart] = useState(interval.start.toString());
-  const [end, setEnd] = useState(interval.end.toString());
+  const [firstMin, setFirstMin] = useState(firstNumber.min.toString());
+  const [firstMax, setFirstMax] = useState(firstNumber.max.toString());
+  const [secondMin, setSecondMin] = useState(secondNumber.min.toString());
+  const [secondMax, setSecondMax] = useState(secondNumber.max.toString());
 
   const saveSettings = () => {
-    const newStart = parseInt(start);
-    const newEnd = parseInt(end);
+    const newFirstMin = parseInt(firstMin);
+    const newFirstMax = parseInt(firstMax);
+    const newSecondMin = parseInt(secondMin);
+    const newSecondMax = parseInt(secondMax);
 
-    if (isNaN(newStart) || isNaN(newEnd) || newStart <= 0 || newEnd < newStart) {
-      alert("Please enter valid numbers. Start must be ≤ End.");
+    if (
+      isNaN(newFirstMin) || isNaN(newFirstMax) || 
+      isNaN(newSecondMin) || isNaN(newSecondMax) ||
+      newFirstMin <= 0 || newFirstMax < newFirstMin ||
+      newSecondMin <= 0 || newSecondMax < newSecondMin
+    ) {
+      alert("Please enter valid numbers. Min must be ≤ Max for both numbers.");
       return;
     }
 
-    setInterval({ start: newStart, end: newEnd });
-    router.back(); // go back to game
+    setFirstNumber({ min: newFirstMin, max: newFirstMax });
+    setSecondNumber({ min: newSecondMin, max: newSecondMax });
+    router.back();
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>⚙️ Settings</Text>
 
-      <Text style={styles.label}>Start of Range</Text>
+      <Text style={styles.sectionTitle}>First Number</Text>
+      <Text style={styles.label}>Minimum</Text>
       <TextInput
-        value={start}
-        onChangeText={setStart}
+        value={firstMin}
+        onChangeText={setFirstMin}
         keyboardType="numeric"
         style={styles.input}
       />
 
-      <Text style={styles.label}>End of Range</Text>
+      <Text style={styles.label}>Maximum</Text>
       <TextInput
-        value={end}
-        onChangeText={setEnd}
+        value={firstMax}
+        onChangeText={setFirstMax}
+        keyboardType="numeric"
+        style={styles.input}
+      />
+
+      <Text style={[styles.sectionTitle, { marginTop: 20 }]}>Second Number</Text>
+      <Text style={styles.label}>Minimum</Text>
+      <TextInput
+        value={secondMin}
+        onChangeText={setSecondMin}
+        keyboardType="numeric"
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>Maximum</Text>
+      <TextInput
+        value={secondMax}
+        onChangeText={setSecondMax}
         keyboardType="numeric"
         style={styles.input}
       />
@@ -61,9 +89,15 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     textAlign: "center",
   },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 10,
+  },
   label: {
     fontSize: 18,
-    marginTop: 20,
+    marginTop: 10,
   },
   input: {
     borderWidth: 1,
@@ -71,5 +105,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     fontSize: 16,
+    marginBottom: 10,
   },
 });

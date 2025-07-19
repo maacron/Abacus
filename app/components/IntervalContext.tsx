@@ -1,22 +1,25 @@
 import { createContext, useContext, useState } from "react";
 
-type Interval = {
-  start: number;
-  end: number;
+type NumberInterval = {
+  min: number;
+  max: number;
 };
 
 type IntervalContextType = {
-  interval: Interval;
-  setInterval: (interval: Interval) => void;
+  firstNumber: NumberInterval;
+  secondNumber: NumberInterval;
+  setFirstNumber: (interval: NumberInterval) => void;
+  setSecondNumber: (interval: NumberInterval) => void;
 };
 
 const IntervalContext = createContext<IntervalContextType | undefined>(undefined);
 
 export const IntervalProvider = ({ children }: { children: React.ReactNode }) => {
-  const [interval, setInterval] = useState<Interval>({ start: 1, end: 10 });
+  const [firstNumber, setFirstNumber] = useState<NumberInterval>({ min: 1, max: 10 });
+  const [secondNumber, setSecondNumber] = useState<NumberInterval>({ min: 1, max: 10 });
 
   return (
-    <IntervalContext.Provider value={{ interval, setInterval }}>
+    <IntervalContext.Provider value={{ firstNumber, secondNumber, setFirstNumber, setSecondNumber }}>
       {children}
     </IntervalContext.Provider>
   );

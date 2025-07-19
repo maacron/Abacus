@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function Index() {
-  const { interval } = useInterval();
+  const { firstNumber, secondNumber } = useInterval();
   const router = useRouter();
 
   const [answer, setAnswer] = useState("");
@@ -15,16 +15,20 @@ export default function Index() {
   const [showTimer, setShowTimer] = useState(true);
 
   const generateNumbers = () => {
-    const num1 = Math.floor(Math.random() * (interval.end - interval.start + 1)) + interval.start;
-    const num2 = Math.floor(Math.random() * (interval.end - interval.start + 1)) + interval.start;
+    const num1 =
+      Math.floor(Math.random() * (firstNumber.max - firstNumber.min + 1)) +
+      firstNumber.min;
+    const num2 =
+      Math.floor(Math.random() * (secondNumber.max - secondNumber.min + 1)) +
+      secondNumber.min;
     setNumbers({ num1, num2 });
     setShowTimer(true);
-    setTimer(4);
+    setTimer(3);
   };
 
   useEffect(() => {
     generateNumbers();
-  }, [interval]);
+  }, [firstNumber, secondNumber]); 
 
   // Timer effect
   useEffect(() => {
@@ -123,18 +127,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   timerContainer: {
-    position: 'absolute',
+    position: "absolute",
     right: 20,
     top: 20,
-    backgroundColor: '#ddd',
+    backgroundColor: "#ddd",
     borderRadius: 20,
     width: 40,
     height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   timerText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
